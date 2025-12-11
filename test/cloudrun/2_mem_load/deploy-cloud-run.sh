@@ -1,21 +1,21 @@
 #!/bin/bash
 set -e
 
-# Deploy CPU Load Generator to Cloud Run
-# Usage: ./deploy-cloud-run.sh [REGION] [SERVICE_NAME] [CPU_TARGET]
-# Example: ./deploy-cloud-run.sh asia-southeast1 cpu-load-85 85
+# Deploy Memory Load Generator to Cloud Run
+# Usage: ./deploy-cloud-run.sh [REGION] [SERVICE_NAME] [MEMORY_TARGET]
+# Example: ./deploy-cloud-run.sh asia-southeast1 mem-load-85 85
 
 REGION=${1:-asia-southeast1}
-SERVICE_NAME=${2:-cpu-load-default}
-CPU_TARGET=${3:-50}
+SERVICE_NAME=${2:-mem-load-default}
+MEMORY_TARGET=${3:-50}
 PROJECT_ID="rare-karma-480813-i3"
 
-echo "🚀 Deploying CPU Load Generator to Cloud Run"
+echo "🚀 Deploying Memory Load Generator to Cloud Run"
 echo "================================"
 echo "Project ID: $PROJECT_ID"
 echo "Region: $REGION"
 echo "Service Name: $SERVICE_NAME"
-echo "CPU Target: ${CPU_TARGET}%"
+echo "Memory Target: ${MEMORY_TARGET}%"
 echo "================================"
 
 # Step 1: Enable required APIs and create Artifact Registry repository
@@ -53,7 +53,7 @@ gcloud run deploy $SERVICE_NAME \
   --source . \
   --region $REGION \
   --project $PROJECT_ID \
-  --set-env-vars CPU_TARGET=$CPU_TARGET,STARTUP_DELAY=10,CPU_LIMIT=1 \
+  --set-env-vars MEMORY_TARGET=$MEMORY_TARGET,STARTUP_DELAY=10,MEMORY_LIMIT=512 \
   --timeout 300 \
   --max-instances 1 \
   --min-instances 1 \
@@ -82,9 +82,9 @@ echo "Project: $PROJECT_ID"
 echo "Region: $REGION"
 echo "Service Name: $SERVICE_NAME"
 echo "Service URL: $SERVICE_URL"
-echo "CPU Target: ${CPU_TARGET}%"
+echo "Memory Target: ${MEMORY_TARGET}%"
 echo ""
-echo "📊 Check CPU usage:"
+echo "📊 Check Memory usage:"
 echo "  curl $SERVICE_URL"
 echo ""
 echo "📋 View logs:"

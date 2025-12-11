@@ -4,10 +4,10 @@ services:
   cpu-load-generator:
     build: .
     image: cpu-load-generator:latest
-    container_name: cpu-load-99
+    container_name: cpu-load-100
     restart: unless-stopped
     ports:
-      - "8099:8080"
+      - "80100:8080"
     deploy:
       resources:
         limits:
@@ -15,7 +15,7 @@ services:
           memory: 512m
     environment:
       - PYTHONUNBUFFERED=1
-      - CPU_TARGET=99
+      - CPU_TARGET=100
       - PORT=8080
     logging:
       driver: "json-file"

@@ -1,31 +1,58 @@
-# Test Configuration for Auto-Failover Testing
-# This file contains all resource configurations for testing failover across different systems
-# Auto-generated from Terraform outputs
+# Test Configuration Example for Auto-Failover Testing
+# Copy this file to test-config.yaml and customize for your deployment
 
 # GCP Project ID
-project_id: my-project-sample
+project_id: my-project-1101-476915
 
 # Monitor Service URL
-monitor_url: https://auto-failover-monitor-sadsas-dt.a.run.app
+monitor_url: https://auto-failover-monitor-zocpikyq2a-an.a.run.app
 
 # Primary and Secondary Regions
 primary_region: asia-northeast1
 secondary_region: asia-northeast2
 
 # ALB Configuration
-# Format: name|ip|paths (comma-separated)
+# Format: name, ip, paths (comma-separated)
 albs:
   - name: ALB1
-    ip: 10.10.12.23
+    ip: 34.102.181.192
     paths: /,/response
+  - name: ALB2
+    ip: 34.8.150.145
+    paths: /,/search
+  - name: ALB3
+    ip: 34.110.194.255
+    paths: /,/export
 
 # Backend Services to monitor
 backend_services:
-  - alb1-main-backend-service
-  - alb1-response-backend-service
+  - global-backend-service
+  - response-backend-service
+  - search-backend-service
+  - export-backend-service
 
 # Cloud Run Services (Primary Region)
 # These are the services that will be deleted during failover testing
 primary_services:
-  - app1-main-tokyo
-  - app1-response-tokyo
+  - app-tokyo
+  - app-tokyo-response
+  - app-tokyo-search
+  - app-tokyo-export
+
+# ==============================================================
+# Example Configuration for Different System (US Regions)
+# ==============================================================
+# project_id: my-us-project
+# monitor_url: https://monitor-us.run.app
+# primary_region: us-central1
+# secondary_region: us-east1
+# albs:
+#   - name: ALB1
+#     ip: 35.201.1.1
+#     paths: /,/api
+# backend_services:
+#   - main-backend-service
+#   - api-backend-service
+# primary_services:
+#   - app-us-central
+#   - app-us-central-api

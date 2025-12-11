@@ -1,0 +1,10 @@
+README.md
+requirement.md
+.git
+.gitignore
+*.md
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python

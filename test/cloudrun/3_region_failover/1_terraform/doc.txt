@@ -1,0 +1,21 @@
+yêu cầu:
+
+tạo Terraform code để dựng các resource sau:
+1 Global ALB gắn với 2 cloudrun (1 ở tokyo, 1 ở osaka)
+
+alb1: alb1-url-map
+nếu path là / thì trỏ về cloud run app1-main-tokyo
+nếu path là /response thì trỏ về cloud run app1-response-tokyo
+nếu một trong các backend service trên bị fail thì chuyển qua cloud run trên osaka tương ứng (app1-main-osaka, app1-response-osaka)
+
+alb2: alb2-url-map
+nếu path là / thì trỏ về cloud run app2-main-tokyo
+nếu path là /response thì trỏ về cloud run app2-response-tokyo
+nếu một trong các backend service trên bị fail thì chuyển qua cloud run trên osaka tương ứng (app2-main-osaka, app2-response-osaka)
+
+alb3: alb3-url-map
+nếu path là / thì trỏ về cloud run app3-main-tokyo
+nếu path là /response thì trỏ về cloud run app3-response-tokyo
+nếu một trong các backend service trên bị fail thì chuyển qua cloud run trên osaka tương ứng (app3-main-osaka, app3-response-osaka)
+
+Tất cả các cloudrun chỉ được truy cập từ ALB, không cho phép truy cập trực tiếp.

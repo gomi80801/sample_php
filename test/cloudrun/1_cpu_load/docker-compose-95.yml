@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  cpu-load-generator:
+    build: .
+    image: cpu-load-generator:latest
+    container_name: cpu-load-95
+    restart: unless-stopped
+    ports:
+      - "8095:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512m
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CPU_TARGET=95
+      - PORT=8080
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

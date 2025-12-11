@@ -4,10 +4,10 @@ services:
   memory-load-generator:
     build: .
     image: memory-load-generator:latest
-    container_name: memory-load-99
+    container_name: memory-load-100
     restart: unless-stopped
     ports:
-      - "8199:8080"
+      - "81100:8080"
     deploy:
       resources:
         limits:
@@ -15,7 +15,7 @@ services:
           memory: 512m
     environment:
       - PYTHONUNBUFFERED=1
-      - MEMORY_TARGET=99
+      - MEMORY_TARGET=100
       - PORT=8080
     logging:
       driver: "json-file"

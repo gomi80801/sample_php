@@ -8,8 +8,8 @@
 cd monitor-service
 
 # Build và push image
-docker build -t gcr.io/my-project-sample/auto-failover-monitor .
-docker push gcr.io/my-project-sample/auto-failover-monitor
+docker build -t gcr.io/my-project-1101-476915/auto-failover-monitor .
+docker push gcr.io/my-project-1101-476915/auto-failover-monitor
 
 # Deploy to Cloud Run
 ./deploy.sh
@@ -20,7 +20,7 @@ docker push gcr.io/my-project-sample/auto-failover-monitor
 Monitor service cần quyền để update backend service:
 
 ```bash
-set PROJECT_ID "my-project-sample"
+set PROJECT_ID "my-project-1101-476915"
 
 # Grant Load Balancer Admin role
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:failover-monitor@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/compute.loadBalancerAdmin"
@@ -36,7 +36,7 @@ set MONITOR_URL (gcloud run services describe auto-failover-monitor --region=asi
 # MONITOR_URL=$(gcloud run services describe auto-failover-monitor --region=asia-northeast1 --format='value(status.url)')
 
 # Tạo Cloud Scheduler job chạy mỗi phút
-set PROJECT_ID "my-project-sample"
+set PROJECT_ID "my-project-1101-476915"
 gcloud scheduler jobs create http failover-monitor-job \
   --location=asia-northeast1 \
   --schedule="*/1 * * * *" \
@@ -178,7 +178,7 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
 ### Test locally
 ```bash
 cd monitor-service
-export PROJECT_ID="my-project-sample"
+export PROJECT_ID="my-project-1101-476915"
 export PORT=8080
 python main.py
 ```
@@ -193,9 +193,9 @@ curl $MONITOR_URL/monitor
 ```bash
 cd monitor-service
 # Edit main.py
-docker build -t gcr.io/my-project-sample/auto-failover-monitor .
-docker push gcr.io/my-project-sample/auto-failover-monitor
-gcloud run deploy auto-failover-monitor --image=gcr.io/my-project-sample/auto-failover-monitor --region=asia-northeast1
+docker build -t gcr.io/my-project-1101-476915/auto-failover-monitor .
+docker push gcr.io/my-project-1101-476915/auto-failover-monitor
+gcloud run deploy auto-failover-monitor --image=gcr.io/my-project-1101-476915/auto-failover-monitor --region=asia-northeast1
 ```
 
 ## Advantages vs Local Cron

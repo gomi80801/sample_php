@@ -1,0 +1,12 @@
+# Ignore test configuration file (contains project-specific config)
+test-config.yaml
+
+# Terraform files
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Temporary test files
+/tmp/
+*.html

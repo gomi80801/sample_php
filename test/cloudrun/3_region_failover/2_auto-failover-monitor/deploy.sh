@@ -2,7 +2,7 @@
 
 # Deploy Auto-Failover Monitor Service to Cloud Run
 
-PROJECT_ID="my-project-sample"
+PROJECT_ID="my-project-1101-476915"
 SERVICE_NAME="auto-failover-monitor"
 REGION="asia-northeast2"
 IMAGE_NAME="gcr.io/${PROJECT_ID}/${SERVICE_NAME}"

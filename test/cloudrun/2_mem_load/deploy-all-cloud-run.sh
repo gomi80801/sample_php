@@ -1,21 +1,21 @@
 #!/bin/bash
 set -e
 
-# Deploy all 3 CPU load services (75%, 85%, 99%) to Cloud Run
+# Deploy all 3 Memory load services (75%, 85%, 95%) to Cloud Run
 # Usage: ./deploy-all-cloud-run.sh [VERSION] [REGION]
 # Example: ./deploy-all-cloud-run.sh v1.0 asia-southeast1
 
 VERSION=${1:-v1.0}
 REGION=${2:-asia-southeast1}
 DOCKER_HUB_USER=${DOCKER_HUB_USER:-baonv}
-IMAGE_NAME="cpu-load-generator"
+IMAGE_NAME="mem-load-generator"
 
-echo "🚀 Deploying ALL CPU Load Services to Cloud Run"
+echo "🚀 Deploying ALL Memory Load Services to Cloud Run"
 echo "================================"
 echo "Docker Hub User: $DOCKER_HUB_USER"
 echo "Image: $DOCKER_HUB_USER/$IMAGE_NAME:$VERSION"
 echo "Region: $REGION"
-echo "Services: cpu-load-75, cpu-load-85, cpu-load-99"
+echo "Services: mem-load-75, mem-load-85, mem-load-95"
 echo "================================"
 
 # Step 1: Build Docker image once
@@ -41,13 +41,13 @@ echo "✅ Image pushed successfully"
 echo ""
 echo "☁️  Step 3: Deploying services to Cloud Run..."
 
-# Deploy 75% CPU
+# Deploy 75% Memory
 echo ""
-echo "📊 Deploying cpu-load-75 (75% CPU target)..."
-gcloud run deploy cpu-load-75 \
+echo "📊 Deploying mem-load-75 (75% Memory target)..."
+gcloud run deploy mem-load-75 \
   --image $DOCKER_HUB_USER/$IMAGE_NAME:$VERSION \
   --region $REGION \
-  --set-env-vars CPU_TARGET=75,STARTUP_DELAY=5 \
+  --set-env-vars MEMORY_TARGET=75,STARTUP_DELAY=5 \
   --timeout 300 \
   --max-instances 1 \
   --cpu 1 \
@@ -57,15 +57,15 @@ gcloud run deploy cpu-load-75 \
   --allow-unauthenticated \
   --quiet
 
-echo "✅ cpu-load-75 deployed"
+echo "✅ mem-load-75 deployed"
 
-# Deploy 85% CPU
+# Deploy 85% Memory
 echo ""
-echo "📊 Deploying cpu-load-85 (85% CPU target)..."
-gcloud run deploy cpu-load-85 \
+echo "📊 Deploying mem-load-85 (85% Memory target)..."
+gcloud run deploy mem-load-85 \
   --image $DOCKER_HUB_USER/$IMAGE_NAME:$VERSION \
   --region $REGION \
-  --set-env-vars CPU_TARGET=85,STARTUP_DELAY=5 \
+  --set-env-vars MEMORY_TARGET=85,STARTUP_DELAY=5 \
   --timeout 300 \
   --max-instances 1 \
   --cpu 1 \
@@ -75,15 +75,15 @@ gcloud run deploy cpu-load-85 \
   --allow-unauthenticated \
   --quiet
 
-echo "✅ cpu-load-85 deployed"
+echo "✅ mem-load-85 deployed"
 
-# Deploy 99% CPU
+# Deploy 95% Memory
 echo ""
-echo "📊 Deploying cpu-load-99 (99% CPU target)..."
-gcloud run deploy cpu-load-99 \
+echo "📊 Deploying mem-load-95 (95% Memory target)..."
+gcloud run deploy mem-load-95 \
   --image $DOCKER_HUB_USER/$IMAGE_NAME:$VERSION \
   --region $REGION \
-  --set-env-vars CPU_TARGET=99,STARTUP_DELAY=5 \
+  --set-env-vars MEMORY_TARGET=95,STARTUP_DELAY=5 \
   --timeout 300 \
   --max-instances 1 \
   --cpu 1 \
@@ -93,43 +93,43 @@ gcloud run deploy cpu-load-99 \
   --allow-unauthenticated \
   --quiet
 
-echo "✅ cpu-load-99 deployed"
+echo "✅ mem-load-95 deployed"
 
 # Step 4: Get service URLs
 echo ""
 echo "🔍 Step 4: Getting service URLs..."
 
-URL_75=$(gcloud run services describe cpu-load-75 --region $REGION --format 'value(status.url)')
-URL_85=$(gcloud run services describe cpu-load-85 --region $REGION --format 'value(status.url)')
-URL_99=$(gcloud run services describe cpu-load-99 --region $REGION --format 'value(status.url)')
+URL_75=$(gcloud run services describe mem-load-75 --region $REGION --format 'value(status.url)')
+URL_85=$(gcloud run services describe mem-load-85 --region $REGION --format 'value(status.url)')
+URL_95=$(gcloud run services describe mem-load-95 --region $REGION --format 'value(status.url)')
 
 echo ""
 echo "================================"
 echo "✅ ALL SERVICES DEPLOYED!"
 echo "================================"
 echo ""
-echo "📊 CPU Load 75%:"
+echo "📊 Memory Load 75%:"
 echo "   URL: $URL_75"
 echo "   Test: curl $URL_75/health"
 echo ""
-echo "📊 CPU Load 85%:"
+echo "📊 Memory Load 85%:"
 echo "   URL: $URL_85"
 echo "   Test: curl $URL_85/health"
 echo ""
-echo "📊 CPU Load 99%:"
-echo "   URL: $URL_99"
-echo "   Test: curl $URL_99/health"
+echo "📊 Memory Load 95%:"
+echo "   URL: $URL_95"
+echo "   Test: curl $URL_95/health"
 echo ""
 echo "================================"
 echo "View logs:"
-echo "  gcloud run services logs tail cpu-load-75 --region $REGION"
-echo "  gcloud run services logs tail cpu-load-85 --region $REGION"
-echo "  gcloud run services logs tail cpu-load-99 --region $REGION"
+echo "  gcloud run services logs tail mem-load-75 --region $REGION"
+echo "  gcloud run services logs tail mem-load-85 --region $REGION"
+echo "  gcloud run services logs tail mem-load-95 --region $REGION"
 echo ""
 echo "Delete all services:"
-echo "  gcloud run services delete cpu-load-75 --region $REGION --quiet"
-echo "  gcloud run services delete cpu-load-85 --region $REGION --quiet"
-echo "  gcloud run services delete cpu-load-99 --region $REGION --quiet"
+echo "  gcloud run services delete mem-load-75 --region $REGION --quiet"
+echo "  gcloud run services delete mem-load-85 --region $REGION --quiet"
+echo "  gcloud run services delete mem-load-95 --region $REGION --quiet"
 echo "================================"
 
 # Optional: Test all services
@@ -138,16 +138,16 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     echo ""
-    echo "Testing cpu-load-75..."
+    echo "Testing mem-load-75..."
     curl -s $URL_75/health
     echo ""
     echo ""
-    echo "Testing cpu-load-85..."
+    echo "Testing mem-load-85..."
     curl -s $URL_85/health
     echo ""
     echo ""
-    echo "Testing cpu-load-99..."
-    curl -s $URL_99/health
+    echo "Testing mem-load-95..."
+    curl -s $URL_95/health
     echo ""
     echo ""
     echo "✅ All health checks passed!"
